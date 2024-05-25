@@ -46,12 +46,36 @@ class Dice{
 export default function ChartComponenent() {
     // const tab
     const [tableStats, setTableStats] = useState({})
-    const [createHitBool, setCreateHitBool] = useState(false)
-    
 
     // to hit table
+    const [createHitBool, setCreateHitBool] = useState(false)
     const [toHitDicesLabel , setToHitDicesLabel] =useState([])
     const [toHitDicesProbability , setToHitDicesProbability] =useState([])
+    const [indexToHitPicked , setIndexToHitPicked] = useState(0)
+
+    function getIndexHitTable(index){
+        setIndexToHitPicked(index)
+        procederTalbeStatsToWound(index)
+        setCreateTableToWound(true)
+    }
+    // to wound table
+    const [createTableToWound, setCreateTableToWound] =useState(false)
+    const [toWoundDicesLabel , setToWoundDicesLabel] =useState([])
+    const [toWoundDicesProbability , setToWoundDicesProbability] =useState([])
+    const [indexToWoundPicked , setIndexToWoundPicked] = useState(0)
+
+    function getIndexWoundTable(index){
+        setIndexToWoundPicked(index)
+        procederTalbeStatsToSave(index)
+        setCreateTableToSave(true)
+    }
+
+
+    // to save table
+    const [createTableToSave, setCreateTableToSave] =useState(false)
+    const [toSaveDicesLabel , setToSaveDicesLabel] =useState([])
+    const [toSaveDicesProbability , setToSaveDicesProbability] =useState([])
+    const [indexToSavePicked , setIndexToSavePicked] = useState(0)
 
 
     function setupTableStats(stats){
@@ -68,23 +92,32 @@ export default function ChartComponenent() {
         return list;
     }
 
-    function updateTable(stateName, setStateName){
-        setStateName(!stateName)
-    }
-
     function procederTalbeStatsToHit(){
         let labelHit = createLabelList(tableStats.numAttacks) // label for hit chart
         let DiceHit = new Dice() // to hit table is always max = tableStats.numAtacks
-        console.log(tableStats.numAttacks, tableStats.toHit);
         let diceProbabilityTable = DiceHit.probabilityForAllDices(tableStats.numAttacks, tableStats.toHit)
         setToHitDicesLabel(labelHit)
         setToHitDicesProbability(diceProbabilityTable)
     }
 
+    function procederTalbeStatsToWound(numberAtacks){
+        let labelWound = createLabelList(numberAtacks) // label for hit chart
+        let DiceWound = new Dice() // to hit table is always max = tableStats.numAtacks
+        let diceProbabilityTableWound = DiceWound.probabilityForAllDices(numberAtacks, tableStats.toWound)
+        setToWoundDicesLabel(labelWound)
+        setToWoundDicesProbability(diceProbabilityTableWound)
+    }
 
+    function procederTalbeStatsToSave(numberAtacks){
+        let labelSave = createLabelList(numberAtacks) // label for hit chart
+        let DiceSave = new Dice() // to hit table is always max = tableStats.numAtacks
+        let diceProbabilityTableSave = DiceSave.probabilityForAllDices(numberAtacks, tableStats.enemySave)
+        setToSaveDicesLabel(labelSave)
+        setToSaveDicesProbability(diceProbabilityTableSave)
+    }
 
     useEffect(()=>{
-        console.log(tableStats);
+        // console.log(tableStats);
         if(createHitBool){
             procederTalbeStatsToHit()
             // setCreateHitBool(!createHitBool)
@@ -93,12 +126,14 @@ export default function ChartComponenent() {
 
 
     return (
-    <div>
+    <div className='site'>
         <TableStats tableSetFunction={setupTableStats}/>
-        {createHitBool ? <SingleChart chartLabelData={toHitDicesLabel} chartProbabilityData={toHitDicesProbability} tableName={'To Hit'}/> : ''}
-        
-        {/* <SingleChart/> */}
-        {/* <SingleChart/> */}
+
+        {createHitBool ? <SingleChart chartLabelData={toHitDicesLabel} chartProbabilityData={toHitDicesProbability} tableName={'To Hit'} indexPicker={getIndexHitTable}/> : ''}
+
+        {createTableToWound ? <SingleChart chartLabelData={toWoundDicesLabel} chartProbabilityData={toWoundDicesProbability} tableName={'To Wound'} indexPicker={getIndexWoundTable}/> : ''}
+
+        {createTableToSave ? <SingleChart chartLabelData={toSaveDicesLabel} chartProbabilityData={toSaveDicesProbability} tableName={'To Save'}/> : ''}
     </div>
   )
 }

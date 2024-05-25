@@ -7,17 +7,7 @@ export default function TableStats({tableSetFunction}) {
     const [damage, setDamage] = useState(1);
     const [enemySave, setEnemySave] = useState(2);
     const [enemyHP, setEnemyHP] = useState(1);
-  
-    const calculateDamage = () => {
-      // Calculate damage based on inputs
-      const hits = numAttacks * (toHit / 6);
-      const wounds = hits * (toWound / 6);
-      const failedSaves = wounds * (1 - enemySave / 6);
-      const damage = failedSaves * enemyHP;
-  
-      return damage;
-    };
-  
+    
     const handleNumAttacksChange = (e) => {
       const value = parseInt(e.target.value);
       if (!isNaN(value)) {
@@ -60,15 +50,6 @@ export default function TableStats({tableSetFunction}) {
     };
 
     function setupTable(){
-    //     console.log({
-    //         numAttacks:numAttacks,
-    //         toHit:toHit,
-    //         toWound:toWound,
-    //         damage:damage,
-    //         enemySave:enemySave,
-    //         enemyHP:enemyHP,
-
-    // });
         tableSetFunction({
             numAttacks:numAttacks,
             toHit:toHit,
@@ -81,44 +62,35 @@ export default function TableStats({tableSetFunction}) {
     }
   
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>Number of Attacks</th>
-            <th>To Hit</th>
-            <th>To Wound</th>
-            <th>Atack Dmg</th>
-            <th>Enemy Save</th>
-            <th>Enemy HP</th>
-            <th>Calculate</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <input type="number" value={numAttacks} onChange={handleNumAttacksChange} min={1} defaultValue={1}/>
-            </td>
-            <td>
-              <input type="number" value={toHit} onChange={handleToHitChange} min={2} max={6} defaultValue={2}/>
-            </td>
-            <td>
-              <input type="number" value={toWound} onChange={handleToWoundChange} min={2} max={6} defaultValue={2}/>
-            </td>
-            <td>
+        <div className='statsTable'>
+            <div>
+               <p>Number of Atacks</p>  
+              <input type="number" value={numAttacks} onChange={handleNumAttacksChange}  min={1} defaultValue={1}/>
+            </div>
+            <div>
+            <p>To Hit</p>  
+              <input type="number" value={toHit} onChange={handleToHitChange} maxLength={1} min={2} max={6} defaultValue={2}/>
+            </div>
+            <div>
+            <p>To Wound</p>  
+              <input type="number" value={toWound} onChange={handleToWoundChange} maxLength={1} min={2} max={6} defaultValue={2}/>
+            </div>
+            <div>
+            <p>Weapon Damage</p>  
               <input type="number" value={damage} onChange={handleToDamageChange} defaultValue={1} min={1}/>
-            </td>
-            <td>
-              <input type="number" value={enemySave} onChange={handleEnemySaveChange} min={2} max={6} defaultValue={2} />
-            </td>
-            <td>
+            </div>
+            <div>
+            <p>Enemy Save</p>  
+              <input type="number" value={enemySave} onChange={handleEnemySaveChange} maxLength={1} min={2} max={6} defaultValue={2} />
+            </div>
+            <div>
+            <p>Enemy HP</p>  
               <input type="number" value={enemyHP} onChange={handleEnemyHPChange} min={1} defaultValue={1}/>
-            </td>
-            <td>
+            </div>
+            <div>
                 <button onClick={setupTable}>calculate</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+        </div>
     );
 
  

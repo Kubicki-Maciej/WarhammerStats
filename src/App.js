@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { Chart } from 'chart.js';
 // import SingleChart from './components/chartAndProbability/SingleChart';
