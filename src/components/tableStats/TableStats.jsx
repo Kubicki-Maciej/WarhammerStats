@@ -92,6 +92,4 @@ export default function TableStats({tableSetFunction}) {
             </div>
         </div>
     );
-
- 
 }
